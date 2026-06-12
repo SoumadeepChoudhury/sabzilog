@@ -29,7 +29,7 @@ class HeaderBar extends StatelessWidget {
             color: const Color(0xFFE9F1E8),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Icon(Icons.local_florist, color: AppTheme.seed),
+          child: Image.asset('assets/images/logo.png'),
         ),
         const SizedBox(width: 12),
         Expanded(

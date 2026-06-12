@@ -195,11 +195,7 @@ class _BrandMark extends StatelessWidget {
             color: const Color(0xFFE9F1E8),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Icon(
-            Icons.local_florist,
-            color: AppTheme.seed,
-            size: 30,
-          ),
+          child: Image.asset('assets/images/logo.png'),
         ),
         const SizedBox(width: 14),
         Expanded(
@@ -265,7 +261,7 @@ class _AuthHint extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Now connected to Firebase. Please ensure the Google and Email sign-in providers are enabled in your console.',
+              'Track purchases, advances, and dues in one place. Stay organized and keep every transaction transparent.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Colors.black.withValues(alpha: .65),
                 fontWeight: FontWeight.w600,

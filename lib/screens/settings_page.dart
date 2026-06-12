@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/screens/profile_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.onLogout});
@@ -71,14 +72,24 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.privacy_tip_outlined),
                 title: const Text('Privacy Policy'),
                 trailing: const Icon(Icons.open_in_new),
-                onTap: () {},
+                onTap: () async {
+                  await launchUrl(
+                    Uri.parse('https://sabzilog.netlify.app/privacy'),
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
               ),
               const Divider(height: 1),
               ListTile(
                 leading: const Icon(Icons.description_outlined),
                 title: const Text('Terms & Conditions'),
                 trailing: const Icon(Icons.open_in_new),
-                onTap: () {},
+                onTap: () async {
+                  await launchUrl(
+                    Uri.parse('https://sabzilog.netlify.app/terms'),
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
               ),
               const Divider(height: 1),
               ListTile(
