@@ -75,7 +75,7 @@ class BalanceHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ownerOwes = balance < 0;
-    final lowBalance = balance >= 0 && balance < 300;
+    final lowBalance = balance >= 0 && balance < 50;
     final headline = ownerOwes ? 'Owner owes maid' : 'Advance balance';
     final amountText = ownerOwes ? 'Rs ${balance.abs()}' : 'Rs $balance';
     final helperText = ownerOwes

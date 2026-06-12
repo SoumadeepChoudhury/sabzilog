@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:logger/screens/profile_page.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.onLogout});
 
   final VoidCallback onLogout;
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  String current_version_code = '';
+
+  void getVersionCode() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      current_version_code = info.version;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getVersionCode();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +64,7 @@ class SettingsPage extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.info_outline),
                 title: const Text('App Version'),
-                subtitle: const Text('v1.0.0'),
+                subtitle: Text(current_version_code),
               ),
               const Divider(height: 1),
               ListTile(
@@ -72,7 +94,7 @@ class SettingsPage extends StatelessWidget {
         const SizedBox(height: 32),
 
         OutlinedButton.icon(
-          onPressed: onLogout,
+          onPressed: widget.onLogout,
           icon: const Icon(Icons.logout),
           label: const Text('Logout'),
         ),

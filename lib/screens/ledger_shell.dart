@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/models/advance_transaction.dart';
 import 'package:logger/supabase/SupabaseImageService.dart';
+import 'package:logger/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/user_role.dart';
@@ -103,26 +104,32 @@ class _LedgerShellState extends State<LedgerShell> {
         .doc('data')
         .get();
     if (snapshot.exists) {
-      final transactions = snapshot.get('transaction');
-      // getting the transaction history
-      rawTransactions = transactions.map<AdvanceTransaction>((item) {
-        final key = item.keys.first;
-        final value = item.values.first;
-
-        return AdvanceTransaction(date: DateTime.parse(key), amount: value);
-      }).toList();
-
-      rawTransactions.sort((a, b) => b.date.compareTo(a.date));
-
       int price = 0;
-      if (transactions.isNotEmpty) {
-        final Map<String, dynamic> lastTransaction =
-            transactions.last as Map<String, dynamic>;
-        final values = lastTransaction.values.toList();
 
-        if (values.isNotEmpty) {
-          price = values.first as int;
+      try {
+        final transactions = snapshot.get('transaction');
+        // getting the transaction history
+        rawTransactions = transactions.map<AdvanceTransaction>((item) {
+          final key = item.keys.first;
+          final value = item.values.first;
+
+          return AdvanceTransaction(date: DateTime.parse(key), amount: value);
+        }).toList();
+
+        rawTransactions.sort((a, b) => b.date.compareTo(a.date));
+
+        if (transactions.isNotEmpty) {
+          final Map<String, dynamic> lastTransaction =
+              transactions.last as Map<String, dynamic>;
+          final values = lastTransaction.values.toList();
+
+          if (values.isNotEmpty) {
+            price = values.first as int;
+          }
         }
+      } catch (e) {
+        debugPrint("Error: $e");
+        rawTransactions = [];
       }
       setState(() {
         _advanceBalance = snapshot.get('balance');
@@ -133,6 +140,13 @@ class _LedgerShellState extends State<LedgerShell> {
 
   @override
   initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        checkUpdate(context);
+      } catch (e) {
+        print("Error while checking update...");
+      }
+    });
     super.initState();
     // Load initial data
     setInitialLogs();
@@ -177,7 +191,10 @@ class _LedgerShellState extends State<LedgerShell> {
         onAddAdvance: _openAdvanceSheet,
         onSettle: _openSettleSheet,
         isLoading: isLoading,
-        setInitialLogs: setInitialLogs,
+        setInitialLogs: () {
+          setInitialLogs();
+          getBalance();
+        },
         onViewAllLogs: () => setState(() {
           _selectedIndex = 1;
         }),
@@ -186,7 +203,10 @@ class _LedgerShellState extends State<LedgerShell> {
       ActivityPage(
         entries: _entries,
         isLoading: isLoading,
-        setInitialLogs: setInitialLogs,
+        setInitialLogs: () {
+          setInitialLogs();
+          getBalance();
+        },
         role: widget.role,
       ),
       BalancePage(
@@ -197,6 +217,10 @@ class _LedgerShellState extends State<LedgerShell> {
         onAddAdvance: _openAdvanceSheet,
         onSettle: _openSettleSheet,
         rawTransactions: rawTransactions,
+        setInitialLogs: () {
+          setInitialLogs();
+          getBalance();
+        },
       ),
       SettingsPage(onLogout: widget.onLogout),
     ];
@@ -210,7 +234,10 @@ class _LedgerShellState extends State<LedgerShell> {
         entries: _entries,
         onCapture: _openCaptureSheet,
         isLoading: isLoading,
-        setInitialLogs: setInitialLogs,
+        setInitialLogs: () {
+          setInitialLogs();
+          getBalance();
+        },
         onViewAllLogs: () => {
           setState(() {
             _selectedIndex = 1;
@@ -220,7 +247,10 @@ class _LedgerShellState extends State<LedgerShell> {
       ActivityPage(
         entries: _entries,
         isLoading: isLoading,
-        setInitialLogs: setInitialLogs,
+        setInitialLogs: () {
+          setInitialLogs();
+          getBalance();
+        },
         role: widget.role,
       ),
       SettingsPage(onLogout: widget.onLogout),
@@ -388,15 +418,21 @@ class _LedgerShellState extends State<LedgerShell> {
               _advanceBalance += amount;
               lastAdvance = _advanceBalance;
             });
+            Map<String, dynamic> tempMap;
+            if (lastAdvance > 0) {
+              tempMap = {
+                'balance': FieldValue.increment(amount),
+                'transaction': FieldValue.arrayUnion([
+                  {'${DateTime.now()}': lastAdvance},
+                ]),
+              };
+            } else {
+              tempMap = {'balance': FieldValue.increment(amount)};
+            }
             await FirebaseFirestore.instance
                 .collection('balance')
                 .doc('data')
-                .update({
-                  'balance': FieldValue.increment(amount),
-                  'transaction': FieldValue.arrayUnion([
-                    {'${DateTime.now()}': lastAdvance},
-                  ]),
-                });
+                .update(tempMap);
           },
         );
       },
