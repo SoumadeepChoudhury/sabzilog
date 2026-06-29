@@ -66,8 +66,8 @@ class BalanceHero extends StatelessWidget {
     super.key,
   });
 
-  final int balance;
-  final int spentToday;
+  final double balance;
+  final double spentToday;
   final int pendingCount;
   final VoidCallback onAddAdvance;
   final VoidCallback onSettle;
@@ -899,12 +899,12 @@ class MonthlyReportCard extends StatelessWidget {
     super.key,
   });
 
-  final int balance;
+  final double balance;
   final List<VegEntry> entries;
 
   @override
   Widget build(BuildContext context) {
-    final totalSpent = entries.fold<int>(
+    final totalSpent = entries.fold<double>(
       0,
       (total, entry) => total + entry.amount,
     );
@@ -1093,10 +1093,10 @@ class _MoneyFlowChart extends StatelessWidget {
     required this.chartTotal,
   });
 
-  final int totalGiven;
-  final int totalSpent;
-  final int balance;
-  final int chartTotal;
+  final double totalGiven;
+  final double totalSpent;
+  final double balance;
+  final double chartTotal;
 
   @override
   Widget build(BuildContext context) {
@@ -1192,9 +1192,9 @@ class _MoneyFlowDonutPainter extends CustomPainter {
     required this.accent,
   });
 
-  final int given;
-  final int spent;
-  final int chartTotal;
+  final double given;
+  final double spent;
+  final double chartTotal;
   final Color accent;
 
   @override

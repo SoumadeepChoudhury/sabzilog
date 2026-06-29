@@ -13,7 +13,7 @@ class CaptureSheet extends StatefulWidget {
   });
 
   final Future<File?> Function() pickImage;
-  final void Function(int amount, String weight, File photo) onSave;
+  final void Function(double amount, String weight, File photo) onSave;
 
   @override
   State<CaptureSheet> createState() => _CaptureSheetState();
@@ -247,7 +247,7 @@ class _CaptureSheetState extends State<CaptureSheet> {
   }
 
   void _save() {
-    final amount = int.tryParse(_amountController.text.trim()) ?? 0;
+    final amount = double.tryParse(_amountController.text.trim()) ?? 0;
     if (amount <= 0) return;
     if (_photo == null) return;
 

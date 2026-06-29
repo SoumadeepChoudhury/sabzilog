@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AddAdvanceSheet extends StatefulWidget {
   const AddAdvanceSheet({required this.onAdd, super.key});
 
-  final ValueChanged<int> onAdd;
+  final ValueChanged<double> onAdd;
 
   @override
   State<AddAdvanceSheet> createState() => _AddAdvanceSheetState();
@@ -50,7 +50,7 @@ class _AddAdvanceSheetState extends State<AddAdvanceSheet> {
               width: double.infinity,
               child: FilledButton.icon(
                 onPressed: () async {
-                  final amount = int.tryParse(_controller.text.trim()) ?? 0;
+                  final amount = double.tryParse(_controller.text.trim()) ?? 0;
                   if (amount > 0) widget.onAdd(amount);
                   Navigator.of(context).pop();
                 },

@@ -19,9 +19,9 @@ class BalancePage extends StatelessWidget {
     super.key,
   });
 
-  final int balance;
-  final int spentToday;
-  final int lastAdvance;
+  final double balance;
+  final double spentToday;
+  final double lastAdvance;
   final List<VegEntry> entries;
   final VoidCallback onAddAdvance;
   final VoidCallback onSettle;
@@ -30,7 +30,7 @@ class BalancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalSpent = entries.fold<int>(
+    final totalSpent = entries.fold<double>(
       0,
       (total, entry) => total + entry.amount,
     );

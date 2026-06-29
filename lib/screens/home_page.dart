@@ -19,8 +19,8 @@ class HomePage extends StatelessWidget {
     super.key,
   });
 
-  final int balance;
-  final int spentToday;
+  final double balance;
+  final double spentToday;
   final int pendingCount;
   final bool isLoading;
   final List<VegEntry> entries;

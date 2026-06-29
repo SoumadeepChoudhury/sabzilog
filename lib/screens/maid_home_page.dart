@@ -19,8 +19,8 @@ class MaidHomePage extends StatelessWidget {
     super.key,
   });
 
-  final int balance;
-  final int spentToday;
+  final double balance;
+  final double spentToday;
   final List<VegEntry> entries;
   final VoidCallback onCapture;
   final bool isLoading;
@@ -85,9 +85,9 @@ class _MaidHero extends StatelessWidget {
     required this.onCapture,
   });
 
-  final int balance;
-  final int spentToday;
-  final int spentThisMonth;
+  final double balance;
+  final double spentToday;
+  final double spentThisMonth;
   final VoidCallback onCapture;
 
   @override

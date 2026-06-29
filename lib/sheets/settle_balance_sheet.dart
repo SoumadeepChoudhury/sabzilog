@@ -7,8 +7,8 @@ class SettleBalanceSheet extends StatefulWidget {
     super.key,
   });
 
-  final int currentBalance;
-  final ValueChanged<int> onSettle;
+  final double currentBalance;
+  final ValueChanged<double> onSettle;
 
   @override
   State<SettleBalanceSheet> createState() => _SettleBalanceSheetState();
@@ -17,9 +17,11 @@ class SettleBalanceSheet extends StatefulWidget {
 class _SettleBalanceSheetState extends State<SettleBalanceSheet> {
   late final TextEditingController _paymentController;
 
-  int get _owedAmount => widget.currentBalance < 0 ? -widget.currentBalance : 0;
-  int get _paymentAmount => int.tryParse(_paymentController.text.trim()) ?? 0;
-  int get _balanceAfterPayment => widget.currentBalance + _paymentAmount;
+  double get _owedAmount =>
+      widget.currentBalance < 0 ? -widget.currentBalance : 0;
+  double get _paymentAmount =>
+      double.tryParse(_paymentController.text.trim()) ?? 0;
+  double get _balanceAfterPayment => widget.currentBalance + _paymentAmount;
 
   @override
   void initState() {
@@ -106,9 +108,9 @@ class _SettlementPreview extends StatelessWidget {
     required this.balanceAfterPayment,
   });
 
-  final int currentBalance;
-  final int paymentAmount;
-  final int balanceAfterPayment;
+  final double currentBalance;
+  final double paymentAmount;
+  final double balanceAfterPayment;
 
   @override
   Widget build(BuildContext context) {

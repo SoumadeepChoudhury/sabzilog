@@ -14,7 +14,7 @@ class VegEntry {
     this.photoTone = const [Colors.transparent, Colors.transparent],
   });
   final String id;
-  final int amount;
+  final double amount;
   final String time;
   final String weight;
   LogStatus status;
@@ -24,7 +24,7 @@ class VegEntry {
 
   VegEntry copyWith({
     String? id,
-    int? amount,
+    double? amount,
     String? weight,
     String? time,
     LogStatus? status,

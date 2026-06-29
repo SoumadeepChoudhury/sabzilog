@@ -31,10 +31,10 @@ class LedgerShell extends StatefulWidget {
 
 class _LedgerShellState extends State<LedgerShell> {
   int _selectedIndex = 0;
-  int _advanceBalance = 0;
+  double _advanceBalance = 0;
   bool isLoading = false;
-  int spentToday = 0;
-  int lastAdvance = 0;
+  double spentToday = 0;
+  double lastAdvance = 0;
   final List<VegEntry> _entries = [];
 
   List<AdvanceTransaction> rawTransactions = [];
@@ -61,7 +61,7 @@ class _LedgerShellState extends State<LedgerShell> {
     _entries.clear();
 
     List<VegEntry> _tempEntries = [];
-    int _spentToday = 0;
+    double _spentToday = 0;
 
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -104,7 +104,7 @@ class _LedgerShellState extends State<LedgerShell> {
         .doc('data')
         .get();
     if (snapshot.exists) {
-      int price = 0;
+      double price = 0;
 
       try {
         final transactions = snapshot.get('transaction');
@@ -124,7 +124,7 @@ class _LedgerShellState extends State<LedgerShell> {
           final values = lastTransaction.values.toList();
 
           if (values.isNotEmpty) {
-            price = values.first as int;
+            price = values.first as double;
           }
         }
       } catch (e) {
