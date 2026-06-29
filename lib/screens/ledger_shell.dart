@@ -89,7 +89,7 @@ class _LedgerShellState extends State<LedgerShell> {
       );
 
       if (transactionDate.isAtSameMomentAs(today))
-        _spentToday += log['price'] as int;
+        _spentToday += log['price'] as double;
     }
     setState(() {
       isLoading = false;
